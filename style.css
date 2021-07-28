@@ -1,4 +1,4 @@
-/*===========RESET CSS===========*/
+/*================== CSS==================*/
 * {
   margin: 0;
   padding: 0;
@@ -12,12 +12,17 @@ img {
   width: 100%;
   height: auto;
 }
-/*===========RESET CSS===========*/
-/* ? */
+
+ul {
+  list-style: none; /*retira os bullets points dos <ul>*/
+}
+
+/*==================/RESET CSS==================*/
+/*==================?================== */
 :root {
   --header-height: 4.5rem;
   /* colors */
-  --hue: 286;
+  --hue: 250;
   /* HSL color mode */
   --base-color: hsl(var(--hue) 36% 57%);
   --base-color-second: hsl(var(--hue) 65% 88%);
@@ -28,14 +33,18 @@ img {
   --body-color: hsl(0 0% 98%);
 }
 
-/*===========BASE===========*/
+/*==================BASE==================*/
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font: 400 1rem 'DM Sans', sans-serif;
   color: var(--text-color);
   background: var(--body-color);
   -webkit-font-smoothing: antialiased; /* suaviza a fonte */
 }
-h1 {
+.title {
   font: 700 1.875rem 'Poppins', sans-serif;
   color: var(--title-color);
   -webkit-font-smoothing: auto;
@@ -49,7 +58,7 @@ h1 {
   padding: 0 2rem;
   border-radius: 0.25rem;
   font: 500 1rem 'DM Sans', sans-serif;
-  transition: background 0.3s; /* suaviza a transição quando mouse passa pelo botao */
+  transition: background 0.3s; /* suaviza a transição do botao quando mouse passa pelo botao */
 }
 
 .button:hover {
@@ -58,15 +67,25 @@ h1 {
 }
 
 .divider-1 {
-  /*linha suave que fica na divisoria da pagina */
   height: 1px;
   background: linear-gradient(
-    /*aplica efeito gradiente*/ 270deg,
-    hsla(var(--hue) 36% 57% 1) 0% hsla(var(--hue) 65% 88% 0.34) 100%
+    270deg,
+    hsla(var(--hue), 36%, 57%, 1),
+    hsla(var(--hue), 65%, 88%, 0.34)
   );
 }
 
-/*=============LAYOUT===========*/
+.divider-2 {
+  height: 1px;
+  background: linear-gradient(
+    270deg,
+    hsla(var(--hue), 65%, 88%, 0.34),
+    hsla(var(--hue), 36%, 57%, 1)
+  );
+}
+
+/*==================LAYOUT==================*/
+
 .container {
   margin-left: 1.5rem; /* 24/16px=1.5 */
   margin-right: 1.5rem;
@@ -74,11 +93,23 @@ h1 {
 
 .grid {
   display: grid;
-  gap: 2rem; /* distancia a img do <h1> e o <h1> do <p> */
+  gap: 2rem; /* distancia entre os itens da pagina */
 }
 
 .section {
   padding: 5rem 0;
+}
+
+.section .title {
+  margin-bottom: 1rem;
+}
+
+.section header {
+  margin-bottom: 4rem;
+}
+
+.section header strong {
+  color: var(--base-color);
 }
 
 #header {
@@ -86,13 +117,36 @@ h1 {
   margin-bottom: 2rem;
   display: flex;
 
-  width: 100%;
   position: fixed;
-  z-index: 100;
   top: 0;
   left: 0;
+  z-index: 100;
   background-color: var(--body-color);
+  width: 100%;
 }
+#header.scroll {
+  background: var(--base-color);
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.15);
+}
+
+#header.scroll .logo span {
+  color: white;
+
+  transition: 0.5s;
+}
+
+#header.scroll .icon-menu {
+  color: white;
+
+  transition: 0.5s;
+}
+
+/* ==================NAV==================*/
+
+main {
+  margin-top: calc(var(--header-height) + 2rem);
+} /*calculo "calc()" da distancia da navbar para a imagem 
+    32px (de distancia da nav para a imagem da home) / 16 = 2rem */
 
 nav {
   height: var(--header-height);
@@ -101,6 +155,103 @@ nav {
   justify-content: space-between;
   width: 100%;
 }
+
+/*==================itens do menu==================*/
+nav .menu {
+  opacity: 0;
+  visibility: hidden;
+  top: -20rem;
+  transition: 0.2s;
+}
+
+nav .menu ul {
+  display: none;
+}
+
+nav.show .menu ul {
+  display: grid;
+}
+
+nav ul li {
+  text-align: center;
+  position: relative;
+}
+/*linha crescente ao passar o mouse nos itens do menu*/
+
+nav ul li a {
+  transition: color 0.2s;
+}
+
+nav ul li a:hover {
+  color: var(--base-color);
+}
+nav ul li a::after {
+  content: '';
+  width: 0%;
+  height: 2px;
+  background: var(--base-color);
+
+  position: absolute;
+  left: 0;
+  bottom: -1.5rem;
+  transition: width 0.2s;
+}
+
+nav ul li a:hover::after {
+  width: 100%;
+}
+/* /linha crescente ao passar o mouse nos itens do menu/ */
+
+nav.show .menu {
+  opacity: 1;
+  visibility: visible;
+
+  background: var(--body-color);
+
+  height: 100vh; /*decide o tamanho do objeto referente a pagina*/
+  width: 100vw;
+
+  position: fixed; /*quando aberto o menu deverá preencher toda a tela (mobile) logo ser a fixo sem margem top ou left*/
+  top: 0;
+  left: 0;
+  /*posicao dos itens dentro do menu*/
+  display: grid;
+  place-content: center;
+}
+
+/*==================MOSTRAR MENU==================*/
+
+nav.show ul.grid {
+  /*distancia entre os itens do menu*/
+  gap: 4rem;
+}
+
+/*==================MENU ABRE E FECHA===================*/
+.toggle {
+  color: var(--base-color);
+  font-size: 1.5rem;
+  cursor: pointer; /*icone puxado do assets/fonts/style.css*/
+}
+
+nav .icon-close {
+  visibility: hidden;
+  opacity: 0;
+
+  position: absolute;
+  top: -1.5rem;
+  right: 1.5rem;
+
+  transition: 0.2s;
+}
+
+nav.show div.icon-close {
+  /*aberto aparece o X - close*/
+  visibility: visible;
+  opacity: 1;
+  top: 1.5rem;
+}
+
+/*==================LOGO===================*/
 
 .logo {
   font: 700 1.31rem 'Poppins', sans-serif;
@@ -111,11 +262,7 @@ nav {
   color: var(--base-color); /* coloriu apenas uma parte da logo */
 }
 
-main {
-  margin-top: var(--header-height);
-}
-
-/*===========HOME===========*/
+/*==================HOME==================*/
 #home {
   overflow: hidden; /* define limites para pagina */
 }
@@ -162,4 +309,66 @@ main {
 
 #home .text p {
   margin-bottom: 2rem;
+}
+/*==================ABOUT==================*/
+#about {
+  background: white;
+}
+
+#about .container {
+  margin: 0;
+}
+
+#about .image {
+  position: relative;
+}
+
+#about .image::before {
+  /*quadrado atras da foto principal*/
+  content: '';
+  height: 100%;
+  width: 100%;
+  background: var(--base-color-second);
+  position: absolute;
+  top: -8.3%;
+  left: -33%;
+  z-index: 0;
+}
+
+#about .image img {
+  position: relative;
+}
+
+#about .image img,
+#about .image::before {
+  /*junção para suavizar as bordas das duas imagens*/
+  border-radius: 0.25rem;
+}
+
+#about .text {
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+}
+/*==================SERVICES==================*/
+.cards.grid {
+  gap: 1.5rem;
+}
+
+.card {
+  padding: 3.625rem 2rem;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.08);
+  border-bottom: 0.25rem solid var(--base-color);
+  border-radius: 0.25rem 0.25rem 0 0;
+  text-align: center;
+}
+
+.card i {
+  display: block;
+  margin-bottom: 1.5rem;
+  font-size: 5rem;
+  color: var(--base-color);
+}
+.card .title {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
 }
