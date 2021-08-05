@@ -31,6 +31,13 @@ ul {
   --text-color: hsl(0 0% 46%);
   --text-color-light: hsl(0 0% 98%);
   --body-color: hsl(0 0% 98%);
+
+  /*=== fontes ==== */
+
+  --title-font-size: 1.875rem;
+  --subtitle-font-size: 1rem;
+  --title-font: 'Poppins', sans-serif;
+  --body-font: 'DM Sans', sans-serif;
 }
 
 /*==================BASE==================*/
@@ -39,13 +46,13 @@ html {
 }
 
 body {
-  font: 400 1rem 'DM Sans', sans-serif;
+  font: 400 1rem var(--body-font);
   color: var(--text-color);
   background: var(--body-color);
   -webkit-font-smoothing: antialiased; /* suaviza a fonte */
 }
 .title {
-  font: 700 1.875rem 'Poppins', sans-serif;
+  font: 700 var(--title-font-size) var(--title-font);
   color: var(--title-color);
   -webkit-font-smoothing: auto;
 }
@@ -57,7 +64,7 @@ body {
   align-items: center;
   padding: 0 2rem;
   border-radius: 0.25rem;
-  font: 500 1rem 'DM Sans', sans-serif;
+  font: 500 1rem var(--body-font);
   transition: background 0.3s; /* suaviza a transição do botao quando mouse passa pelo botao */
 }
 
@@ -97,11 +104,17 @@ body {
 }
 
 .section {
-  padding: 5rem 0;
+  padding: calc(5rem + var(--header-height)) 0;
+  /*calculo "calc()" da distancia da navbar para a imagem 
+      32px (de distancia da nav para a imagem da home) / 16 = 2rem */
 }
 
 .section .title {
   margin-bottom: 1rem;
+}
+
+.section .subtitle {
+  font-size: var(--subtitle-font-size);
 }
 
 .section header {
@@ -125,12 +138,11 @@ body {
   width: 100%;
 }
 #header.scroll {
-  background: var(--base-color);
   box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.15);
 }
 
 #header.scroll .logo span {
-  color: white;
+  color: var(--base-color);
 
   transition: 0.5s;
 }
@@ -142,11 +154,6 @@ body {
 }
 
 /* ==================NAV==================*/
-
-main {
-  margin-top: calc(var(--header-height) + 2rem);
-} /*calculo "calc()" da distancia da navbar para a imagem 
-    32px (de distancia da nav para a imagem da home) / 16 = 2rem */
 
 nav {
   height: var(--header-height);
@@ -182,9 +189,12 @@ nav ul li a {
   transition: color 0.2s;
 }
 
-nav ul li a:hover {
+nav ul li a:hover,
+nav ul li a.active {
   color: var(--base-color);
+  font-weight: bold;
 }
+
 nav ul li a::after {
   content: '';
   width: 0%;
@@ -197,7 +207,8 @@ nav ul li a::after {
   transition: width 0.2s;
 }
 
-nav ul li a:hover::after {
+nav ul li a:hover::after,
+nav ul li a.active::after {
   width: 100%;
 }
 /* /linha crescente ao passar o mouse nos itens do menu/ */
@@ -254,12 +265,15 @@ nav.show div.icon-close {
 /*==================LOGO===================*/
 
 .logo {
-  font: 700 1.31rem 'Poppins', sans-serif;
+  font: 700 1.31rem var(--title-font);
   color: var(--title-color);
 }
 
 .logo span {
   color: var(--base-color); /* coloriu apenas uma parte da logo */
+}
+.logo-alt span {
+  color: var(--body-color);
 }
 
 /*==================HOME==================*/
@@ -465,4 +479,211 @@ nav.show div.icon-close {
 
 #contact ul li i {
   color: var(--base-color);
+}
+
+/*==================FOOTER==================*/
+footer {
+  background: var(--base-color);
+}
+
+footer.section {
+  padding: 4rem 0;
+}
+
+footer .logo {
+  display: inline-block; /* espaço entre a logo e os elementos abaixo */
+  /* quando a logo for um elemento <a> utiliza-se inline-block para mexer nas margens */
+  margin-bottom: 1.5rem;
+}
+
+footer .brand p {
+  color: var(--text-color-light);
+  margin-bottom: 0.75rem;
+}
+
+footer i {
+  font-size: 1.5rem;
+  color: var(--text-color-light);
+}
+
+footer .social {
+  grid-auto-flow: column;
+  width: fit-content; /* serve para encaixar os icons em seu tamanho sem sobrar espaço */
+}
+
+footer .social a {
+  transition: 0.3s;
+  display: inline-block;
+}
+
+footer .social a:hover {
+  transform: translateY(-8px);
+}
+
+/* ARROW UP */
+
+.back-to-top {
+  background: var(--base-color);
+  color: var(--text-color-light);
+
+  position: fixed; /* visivel na pagina toda durante o scroll */
+  right: 1rem;
+  bottom: 1rem;
+
+  padding: 0.5rem;
+  clip-path: circle(); /*arredonda*/
+
+  font-size: 1.5rem;
+  line-height: 0;
+
+  visibility: hidden;
+  opacity: 0;
+
+  transition: 0.3s;
+
+  transform: translateY(
+    100%
+  ); /*translate movimenta os eixos x y ou z no caso aqui mexe o vertical*/
+}
+
+.back-to-top.show {
+  /*quando a seta aparece */
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/*====MEDIA QUERIES====*/
+/* extra large devices: 1200 > */
+@media (min-width: 1200px) {
+  /* classes reutilizaveis */
+
+  .container {
+    max-width: 1120px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .section {
+    padding: 10rem 0;
+  }
+
+  .section header,
+  #testimonials header {
+    max-width: 32rem;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .button {
+    height: 3.125rem;
+  }
+
+  /* navigation */
+  nav .menu {
+    opacity: 1;
+    visibility: visible;
+    top: 0;
+  }
+
+  nav .menu ul {
+    display: flex;
+    gap: 2rem;
+  }
+
+  nav .menu ul li a.title {
+    font: 700 1rem var(--body-font);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  nav .menu ul li a.title.active {
+    font-weight: bold;
+    -webkit-font-smoothing: auto;
+  }
+
+  nav .icon-menu {
+    display: none;
+  }
+
+  /* layout */
+
+  main {
+    margin-top: var(--header-height);
+  }
+
+  /* home */
+  #home .container {
+    grid-auto-flow: column;
+
+    justify-content: space-between;
+
+    margin: 0 auto;
+  }
+
+  #home .image {
+    order: 1;
+  }
+
+  #home .text {
+    order: 0;
+    max-width: 24rem;
+    text-align: left;
+  }
+
+  /* about */
+  #about .container {
+    margin: 0 auto;
+    grid-auto-flow: column;
+  }
+
+  /* services */
+  .cards {
+    grid-template-columns: 1fr 1fr 1fr; /* divide as colunas da sessao servicos fr = fracoes */
+  }
+
+  .card {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+
+  /* testimonials */
+
+  #testimonials .container {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* contact */
+  #contact .container {
+    grid-auto-flow: column;
+    align-items: center;
+  }
+
+  #contact .text {
+    max-width: 25rem;
+  }
+
+  footer.section {
+    padding: 3.75rem 0;
+  }
+  footer .container {
+    grid-auto-flow: column; /* colunas */
+    align-items: center; /* alinhar ao eixo x deslocando ao eixo y */
+    justify-content: space-between; /* espaços entre elementos */
+  }
+
+  footer .logo {
+    font-size: 2.25rem; /*tamanho da logo no footer */
+  }
+}
+
+/* large devices: 1023 > */
+/* large devices: 992 > */
+
+@media (min-width: 992px) {
+  :root {
+    --title-font-size: 2.25rem;
+    --subtitle-font-size: 1.125rem;
+  }
 }
